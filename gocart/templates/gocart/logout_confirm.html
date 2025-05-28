@@ -1,0 +1,16 @@
+{% extends 'gocart/base.html' %}
+
+{% block content %}
+  <div style="max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9f9f9; border-radius: 15px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); text-align: center;">
+    <h2 style="font-family: 'Arial', sans-serif; color: #4CAF50; margin-bottom: 20px; font-size: 24px;">Are you sure you want to log out?</h2>
+    
+    <div style="font-family: 'Arial', sans-serif; color: #333; margin-bottom: 30px;">
+      <p style="font-size: 18px;">We’ll miss you! 😢 Come back soon! 💚</p>
+    </div>
+
+    <div>
+      <a href="{% url 'confirm_logout' %}" class="btn" style="background-color: #FF6F61; color: white; padding: 12px 30px; border-radius: 30px; text-decoration: none; font-size: 18px; margin-right: 20px;">Yes, Logout</a>
+      <a href="{% url 'home' %}" class="btn" style="background-color: #4CAF50; color: white; padding: 12px 30px; border-radius: 30px; text-decoration: none; font-size: 18px;">Cancel</a>
+    </div>
+  </div>
+{% endblock %}
