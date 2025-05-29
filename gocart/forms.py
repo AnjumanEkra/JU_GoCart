@@ -24,6 +24,30 @@ class RegisterForm(UserCreationForm):
         model = User
         fields = ['username', 'email', 'role', 'password1', 'password2']
 
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = [
+            'first_name', 'last_name', 'gender', 'dob',
+            'present_address', 'postal_code', 'home_district',
+            'nationality', 'phone', 'profile_picture'
+        ]
+        widgets = {
+            'dob': forms.DateInput(attrs={'type': 'date'}),
+        }
+
+# ✅ Driver Extra Profile Form
+class DriverProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = [
+            'first_name', 'last_name', 'dob', 'present_address', 'postal_code',
+            'home_district', 'nationality', 'phone', 'nid_card_no', 'profile_picture'
+        ]
+        widgets = {
+            'dob': forms.DateInput(attrs={'type': 'date'}),
+        }
+
 # ✅ Custom Password Change Form (Optional: for better UI later)
 class CustomPasswordChangeForm(PasswordChangeForm):
     old_password = forms.CharField(

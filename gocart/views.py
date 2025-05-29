@@ -50,3 +50,29 @@ def logout_view(request):
 def confirm_logout(request):
     logout(request)
     return redirect('home')
+
+# -------------------------
+# Profile Views
+# -------------------------
+
+@login_required
+def complete_profile(request):
+    if request.method == 'POST':
+        user = request.user
+        user.first_name = request.POST.get('first_name')
+        user.last_name = request.POST.get('last_name')
+        user.gender = request.POST.get('gender')
+        user.dob = request.POST.get('dob')
+        user.present_address = request.POST.get('present_address')
+        user.postal_code = request.POST.get('postal_code')
+        user.home_district = request.POST.get('home_district')
+        user.nationality = request.POST.get('nationality')
+        user.phone = request.POST.get('phone')
+        if user.role == 'driver':
+            user.nid_card_no = request.POST.get('nid_card_no')
+        if 'profile_picture' in request.FILES:
+            user.profile_picture = request.FILES['profile_picture']
+        user.save()
+        # messages.success(request, 'Profile information saved successfully!')
+        return redirect('home')
+    return render(request, 'gocart/complete_profile.html')
