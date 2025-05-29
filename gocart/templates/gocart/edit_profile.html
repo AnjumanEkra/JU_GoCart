@@ -1,0 +1,43 @@
+{% extends 'gocart/base.html' %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center py-5" style="height: 95vh;">
+  <div class="card shadow-lg p-4 rounded-4" style="max-width: 600px; margin: 0 auto;">
+    <h2 class="text-center mb-4 text-warning">Edit Your Profile</h2>
+
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form.as_p }}
+
+      <div class="d-flex justify-content-between mt-4">
+        <a href="{% url 'profile' %}" class="btn btn-secondary">Cancel</a>
+        <button type="submit" class="btn btn-warning">Save Changes</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+{% block extra_styles %}
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f8f9fa;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-warning {
+      background-color: #ffc107;
+      border-color: #ffc107;
+    }
+
+    .btn-warning:hover {
+      background-color: #e0a800;
+      border-color: #d39e00;
+    }
+  </style>
+{% endblock %}

@@ -16,5 +16,8 @@ urlpatterns = [
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(template_name='gocart/password_reset_complete.html'), name='password_reset_complete'),
 
     # Profile
+    path('profile/', views.profile_view, name='profile'),
     path('complete-profile/', views.complete_profile, name='complete_profile'),
+    path('change-password/', views.change_password, name='change_password'),
+    path('delete-account/', views.delete_account, name='delete_account'),
 ]

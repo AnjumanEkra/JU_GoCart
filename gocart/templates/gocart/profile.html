@@ -1,0 +1,126 @@
+{% extends 'gocart/base.html' %}
+{% block title %}My Profile{% endblock %}
+
+{% block content %}
+<div class="container py-5" style="margin-top: 80px;">
+  <div class="row">
+    <!-- Sidebar -->
+    <div class="col-md-4 mb-4">
+      <div class="card shadow-sm p-3 bg-white rounded">
+        <div class="text-center">
+          {% if request.user.profile_picture %}
+            <img src="{{ request.user.profile_picture.url }}" class="rounded-circle mb-3" width="120" height="120">
+          {% else %}
+            <img src="https://via.placeholder.com/120" class="rounded-circle mb-3" alt="No Image">
+          {% endif %}
+          <h5>{{ user.username }}</h5>
+          <p class="text-muted">{{ user.email }}</p>
+        </div>
+        <div class="d-grid gap-2">
+          <button class="btn btn-outline-primary" onclick="toggleEdit(true)">Edit Profile</button>
+          <a href="{% url 'change_password' %}" class="btn btn-outline-warning">Change Password</a>
+          <a href="{% url 'ride_history' %}" class="btn btn-outline-info">View Ride History</a>
+          <a href="{% url 'delete_account' %}" class="btn btn-outline-danger">Delete Account</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Profile Info / Edit Form -->
+    <div class="col-md-8">
+      <div class="card shadow-sm p-4 bg-white rounded">
+        <h4 class="mb-4 text-success">Profile Details</h4>
+
+        <!-- Display Info -->
+        <div id="profile-display">
+          <ul class="list-group list-group-flush mb-3">
+            <li class="list-group-item"><strong>Full Name:</strong> {{ user.get_full_name }}</li>
+            <li class="list-group-item"><strong>Role:</strong> {{ user.get_role_display }}</li>
+            <li class="list-group-item"><strong>Gender:</strong> {{ user.gender }}</li>
+            <li class="list-group-item"><strong>Date of Birth:</strong> {{ user.dob }}</li>
+            <li class="list-group-item"><strong>Present Address:</strong> {{ user.present_address }}</li>
+            <li class="list-group-item"><strong>Postal Code:</strong> {{ user.postal_code }}</li>
+            <li class="list-group-item"><strong>Home District:</strong> {{ user.home_district }}</li>
+            <li class="list-group-item"><strong>Nationality:</strong> {{ user.nationality }}</li>
+            <li class="list-group-item"><strong>Phone:</strong> {{ user.phone }}</li>
+            {% if user.role == 'driver' %}
+              <li class="list-group-item"><strong>NID Card No:</strong> {{ user.nid_card_no }}</li>
+            {% endif %}
+          </ul>
+        </div>
+
+        <!-- Edit Form -->
+        <form method="POST" enctype="multipart/form-data" id="edit-form" style="display:none;">
+          {% csrf_token %}
+          <div class="row">
+            <div class="col-md-6 mb-3">
+                <label>First Name</label>
+                <input type="text" name="first_name" value="{{ user.first_name }}" class="form-control" required>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label>Last Name</label>
+                <input type="text" name="last_name" value="{{ user.last_name }}" class="form-control" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label>Gender</label>
+                <select name="gender" class="form-control" required>
+                  <option value="male" {% if user.gender == 'male' %}selected{% endif %}>Male</option>
+                  <option value="female" {% if user.gender == 'female' %}selected{% endif %}>Female</option>
+                  <option value="other" {% if user.gender == 'other' %}selected{% endif %}>Other</option>
+                </select>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label>Date of Birth</label>
+              <input type="date" name="dob" value="{{ user.dob|date:'Y-m-d' }}" class="form-control" required>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label>Present Address</label>
+            <input type="text" name="present_address" value="{{ user.present_address }}" class="form-control" required>
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label>Postal Code</label>
+              <input type="text" name="postal_code" value="{{ user.postal_code }}" class="form-control" required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label>Home District</label>
+              <input type="text" name="home_district" value="{{ user.home_district }}" class="form-control" required>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label>Nationality</label>
+              <input type="text" name="nationality" value="{{ user.nationality }}" class="form-control" required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label>Phone</label>
+              <input type="text" name="phone" value="{{ user.phone }}" class="form-control" required>
+            </div>
+          </div>
+          {% if user.role == 'driver' %}
+            <div class="mb-3">
+              <label>NID Card No</label>
+              <input type="text" name="nid_card_no" value="{{ user.nid_card_no }}" class="form-control" required>
+            </div>
+          {% endif %}
+          <div class="mb-3">
+            <label>Profile Picture</label>
+            <input type="file" name="profile_picture" class="form-control">
+          </div>
+          <div class="d-flex justify-content-end gap-2">
+            <button type="submit" class="btn btn-success">Save</button>
+            <button type="button" class="btn btn-secondary" onclick="toggleEdit(false)">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function toggleEdit(show) {
+    document.getElementById('profile-display').style.display = show ? 'none' : 'block';
+    document.getElementById('edit-form').style.display = show ? 'block' : 'none';
+  }
+</script>
+{% endblock %}
